@@ -10,10 +10,6 @@
 
 <style>
 
-/* =========================
-   BASIC
-========================= */
-
 *{
     box-sizing:border-box;
 }
@@ -44,9 +40,7 @@ h1,h2{
     color:#666;
 }
 
-/* =========================
-   BUTTON
-========================= */
+/* BUTTONS */
 
 button{
     width:100%;
@@ -62,11 +56,7 @@ button:active{
     transform:scale(.98);
 }
 
-.login-btn{
-    background:#1976d2;
-    color:white;
-}
-
+.login-btn,
 .add-btn{
     background:#1976d2;
     color:white;
@@ -92,9 +82,12 @@ button:active{
     color:white;
 }
 
-/* =========================
-   INPUT
-========================= */
+.history-btn{
+    background:#673ab7;
+    color:white;
+}
+
+/* INPUT */
 
 input{
     width:100%;
@@ -105,9 +98,7 @@ input{
     font-size:16px;
 }
 
-/* =========================
-   SCREENS
-========================= */
+/* SCREENS */
 
 .login-box,
 .dashboard{
@@ -119,9 +110,7 @@ input{
     display:block;
 }
 
-/* =========================
-   MESSAGE
-========================= */
+/* MESSAGE */
 
 .message{
     text-align:center;
@@ -130,19 +119,11 @@ input{
     min-height:20px;
 }
 
-/* =========================
-   CARDS
-========================= */
+/* CARDS */
 
-.card{
-    background:#f8f9fa;
-    padding:15px;
-    margin:10px 0;
-    border-radius:10px;
-    border:1px solid #ddd;
-}
-
-.worker-card{
+.card,
+.worker-card,
+.history-card{
     background:#f8f9fa;
     padding:15px;
     margin:10px 0;
@@ -161,9 +142,7 @@ input{
     font-size:14px;
 }
 
-/* =========================
-   SUMMARY
-========================= */
+/* SUMMARY */
 
 .summary{
     display:grid;
@@ -200,9 +179,7 @@ input{
     font-size:13px;
 }
 
-/* =========================
-   ATTENDANCE STATUS
-========================= */
+/* STATUS */
 
 .status{
     padding:8px;
@@ -227,9 +204,7 @@ input{
     color:#555;
 }
 
-/* =========================
-   DATE
-========================= */
+/* DATE */
 
 .date-box{
     text-align:center;
@@ -238,9 +213,63 @@ input{
     color:#444;
 }
 
-/* =========================
-   DARK MODE
-========================= */
+/* HISTORY */
+
+.history-section{
+    margin-top:20px;
+}
+
+.history-date{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.history-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+}
+
+.history-number{
+    padding:10px 5px;
+    text-align:center;
+    border-radius:7px;
+    color:white;
+    font-weight:bold;
+}
+
+.history-total{
+    background:#1976d2;
+}
+
+.history-present{
+    background:#2e7d32;
+}
+
+.history-absent{
+    background:#d32f2f;
+}
+
+.history-workers{
+    margin-top:10px;
+}
+
+.history-worker{
+    padding:8px;
+    margin:5px 0;
+    background:white;
+    border-radius:6px;
+    border:1px solid #ddd;
+}
+
+.no-history{
+    text-align:center;
+    color:#777;
+    padding:15px;
+}
+
+/* DARK MODE */
 
 .dark{
     background:#222;
@@ -253,7 +282,8 @@ input{
 }
 
 .dark .card,
-.dark .worker-card{
+.dark .worker-card,
+.dark .history-card{
     background:#444;
     border-color:#555;
 }
@@ -269,9 +299,12 @@ input{
     color:#ccc;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.dark .history-worker{
+    background:#555;
+    border-color:#666;
+}
+
+/* RESPONSIVE */
 
 @media(max-width:500px){
 
@@ -295,6 +328,10 @@ input{
         font-size:21px;
     }
 
+    .history-summary{
+        grid-template-columns:1fr 1fr 1fr;
+    }
+
 }
 
 </style>
@@ -304,9 +341,7 @@ input{
 
 <div class="container">
 
-<!-- =========================
-     LOGIN SCREEN
-========================= -->
+<!-- LOGIN -->
 
 <div id="loginBox" class="login-box active">
 
@@ -319,516 +354,8 @@ input{
     <input
         type="text"
         id="username"
-        placeholder="Username"
-    >
+        placeholder="Username">
 
     <input
         type="password"
         id="password"
-        placeholder="Password"
-    >
-
-    <button
-        class="login-btn"
-        onclick="login()">
-        Login
-    </button>
-
-    <div id="loginMessage" class="message"></div>
-
-    <p style="text-align:center;color:#777;font-size:13px;">
-        Demo Login: admin / 1234
-    </p>
-
-</div>
-
-
-<!-- =========================
-     DASHBOARD
-========================= -->
-
-<div id="dashboard" class="dashboard">
-
-    <h1>👷 Workers Attendance</h1>
-
-    <div class="date-box">
-        📅 <span id="currentDate"></span>
-    </div>
-
-    <!-- SUMMARY -->
-
-    <div class="summary">
-
-        <div class="summary-box total">
-            <div class="summary-number"
-                 id="totalWorkers">
-                0
-            </div>
-
-            <div class="summary-title">
-                Total
-            </div>
-        </div>
-
-        <div class="summary-box present">
-            <div class="summary-number"
-                 id="presentWorkers">
-                0
-            </div>
-
-            <div class="summary-title">
-                Present
-            </div>
-        </div>
-
-        <div class="summary-box absent">
-            <div class="summary-number"
-                 id="absentWorkers">
-                0
-            </div>
-
-            <div class="summary-title">
-                Absent
-            </div>
-        </div>
-
-    </div>
-
-
-    <!-- ADD WORKER -->
-
-    <div class="card">
-
-        <h2>➕ Add Worker</h2>
-
-        <input
-            type="text"
-            id="workerName"
-            placeholder="Worker Name"
-        >
-
-        <input
-            type="text"
-            id="workerId"
-            placeholder="Worker ID"
-        >
-
-        <button
-            class="add-btn"
-            onclick="addWorker()">
-            Add Worker
-        </button>
-
-    </div>
-
-
-    <!-- WORKERS -->
-
-    <h2>👷 Worker List</h2>
-
-    <div id="workerList"></div>
-
-
-    <!-- CONTROLS -->
-
-    <button
-        class="reset-btn"
-        onclick="resetAttendance()">
-        🔄 Reset Today's Attendance
-    </button>
-
-    <button
-        class="logout-btn"
-        onclick="logout()">
-        🚪 Logout
-    </button>
-
-    <button
-        onclick="toggleDarkMode()">
-        🌙 Dark Mode
-    </button>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =========================
-   DATA
-========================= */
-
-let workers = JSON.parse(
-    localStorage.getItem("workers")
-) || [
-
-    {
-        id: "W001",
-        name: "Ramesh",
-        attendance: "none"
-    },
-
-    {
-        id: "W002",
-        name: "Suresh",
-        attendance: "none"
-    },
-
-    {
-        id: "W003",
-        name: "Amit",
-        attendance: "none"
-    }
-
-];
-
-
-/* =========================
-   LOGIN
-========================= */
-
-function login(){
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    const password =
-        document.getElementById("password").value.trim();
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    if(username === "admin" && password === "1234"){
-
-        document.getElementById("loginBox")
-            .classList.remove("active");
-
-        document.getElementById("dashboard")
-            .classList.add("active");
-
-        message.innerText = "";
-
-        updateDate();
-        renderWorkers();
-
-    }
-    else{
-
-        message.style.color = "#d32f2f";
-
-        message.innerText =
-            "❌ गलत Username या Password";
-
-    }
-
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-function logout(){
-
-    document.getElementById("dashboard")
-        .classList.remove("active");
-
-    document.getElementById("loginBox")
-        .classList.add("active");
-
-    document.getElementById("username").value = "";
-    document.getElementById("password").value = "";
-
-}
-
-
-/* =========================
-   DATE
-========================= */
-
-function updateDate(){
-
-    const date = new Date();
-
-    const options = {
-        day:"2-digit",
-        month:"long",
-        year:"numeric"
-    };
-
-    document.getElementById("currentDate")
-        .innerText =
-        date.toLocaleDateString("hi-IN", options);
-
-}
-
-
-/* =========================
-   SAVE DATA
-========================= */
-
-function saveWorkers(){
-
-    localStorage.setItem(
-        "workers",
-        JSON.stringify(workers)
-    );
-
-}
-
-
-/* =========================
-   ADD WORKER
-========================= */
-
-function addWorker(){
-
-    const name =
-        document.getElementById("workerName")
-        .value.trim();
-
-    const id =
-        document.getElementById("workerId")
-        .value.trim();
-
-
-    if(name === "" || id === ""){
-
-        alert("Worker Name और Worker ID डालें।");
-        return;
-
-    }
-
-
-    const alreadyExists =
-        workers.some(worker => worker.id === id);
-
-
-    if(alreadyExists){
-
-        alert("यह Worker ID पहले से मौजूद है।");
-        return;
-
-    }
-
-
-    workers.push({
-
-        id:id,
-        name:name,
-        attendance:"none"
-
-    });
-
-
-    saveWorkers();
-
-    document.getElementById("workerName").value = "";
-    document.getElementById("workerId").value = "";
-
-    renderWorkers();
-
-}
-
-
-/* =========================
-   ATTENDANCE
-========================= */
-
-function markAttendance(index,status){
-
-    workers[index].attendance = status;
-
-    saveWorkers();
-
-    renderWorkers();
-
-}
-
-
-/* =========================
-   RENDER WORKERS
-========================= */
-
-function renderWorkers(){
-
-    const list =
-        document.getElementById("workerList");
-
-    list.innerHTML = "";
-
-
-    workers.forEach((worker,index)=>{
-
-        let statusHTML = "";
-
-        if(worker.attendance === "present"){
-
-            statusHTML = `
-                <div class="status status-present">
-                    ✅ Present
-                </div>
-            `;
-
-        }
-        else if(worker.attendance === "absent"){
-
-            statusHTML = `
-                <div class="status status-absent">
-                    ❌ Absent
-                </div>
-            `;
-
-        }
-        else{
-
-            statusHTML = `
-                <div class="status status-none">
-                    ⏳ Attendance Not Marked
-                </div>
-            `;
-
-        }
-
-
-        const card = document.createElement("div");
-
-        card.className = "worker-card";
-
-
-        card.innerHTML = `
-
-            <div class="worker-name">
-                👷 ${worker.name}
-            </div>
-
-            <div class="worker-info">
-                Worker ID: ${worker.id}
-            </div>
-
-            ${statusHTML}
-
-            <button
-                class="present-btn"
-                onclick="markAttendance(${index},'present')">
-                ✅ Present
-            </button>
-
-            <button
-                class="absent-btn"
-                onclick="markAttendance(${index},'absent')">
-                ❌ Absent
-            </button>
-
-        `;
-
-
-        list.appendChild(card);
-
-    });
-
-
-    updateSummary();
-
-}
-
-
-/* =========================
-   SUMMARY
-========================= */
-
-function updateSummary(){
-
-    const total = workers.length;
-
-    const present =
-        workers.filter(
-            worker => worker.attendance === "present"
-        ).length;
-
-    const absent =
-        workers.filter(
-            worker => worker.attendance === "absent"
-        ).length;
-
-
-    document.getElementById("totalWorkers")
-        .innerText = total;
-
-    document.getElementById("presentWorkers")
-        .innerText = present;
-
-    document.getElementById("absentWorkers")
-        .innerText = absent;
-
-}
-
-
-/* =========================
-   RESET ATTENDANCE
-========================= */
-
-function resetAttendance(){
-
-    const confirmReset =
-        confirm(
-            "क्या आप आज की पूरी attendance reset करना चाहते हैं?"
-        );
-
-
-    if(!confirmReset){
-        return;
-    }
-
-
-    workers.forEach(worker => {
-
-        worker.attendance = "none";
-
-    });
-
-
-    saveWorkers();
-
-    renderWorkers();
-
-}
-
-
-/* =========================
-   DARK MODE
-========================= */
-
-function toggleDarkMode(){
-
-    document.body.classList.toggle("dark");
-
-    const dark =
-        document.body.classList.contains("dark");
-
-    localStorage.setItem(
-        "darkMode",
-        dark
-    );
-
-}
-
-
-/* =========================
-   LOAD DARK MODE
-========================= */
-
-if(
-    localStorage.getItem("darkMode") === "true"
-){
-
-    document.body.classList.add("dark");
-
-}
-
-</script>
-
-</body>
-</html>
