@@ -359,3 +359,947 @@ input{
     <input
         type="password"
         id="password"
+        placeholder="Password">
+
+    <button
+        class="login-btn"
+        onclick="login()">
+        Login
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
+    <p style="text-align:center;color:#777;font-size:13px;">
+        Demo Login: admin / 1234
+    </p>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboard" class="dashboard">
+
+    <h1>👷 Workers Attendance</h1>
+
+    <div class="date-box">
+        📅 <span id="currentDate"></span>
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-box total">
+
+            <div class="summary-number"
+                 id="totalWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Total
+            </div>
+
+        </div>
+
+
+        <div class="summary-box present">
+
+            <div class="summary-number"
+                 id="presentWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Present
+            </div>
+
+        </div>
+
+
+        <div class="summary-box absent">
+
+            <div class="summary-number"
+                 id="absentWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Absent
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADD WORKER -->
+
+    <div class="card">
+
+        <h2>➕ Add Worker</h2>
+
+        <input
+            type="text"
+            id="workerName"
+            placeholder="Worker Name">
+
+        <input
+            type="text"
+            id="workerId"
+            placeholder="Worker ID">
+
+        <button
+            class="add-btn"
+            onclick="addWorker()">
+            Add Worker
+        </button>
+
+    </div>
+
+
+    <!-- WORKER LIST -->
+
+    <h2>👷 Worker List</h2>
+
+    <div id="workerList"></div>
+
+
+    <!-- HISTORY BUTTON -->
+
+    <button
+        class="history-btn"
+        onclick="toggleHistory()">
+        📋 Attendance History
+    </button>
+
+
+    <!-- HISTORY -->
+
+    <div id="historySection"
+         class="history-section"
+         style="display:none;">
+
+        <h2>📅 Attendance History</h2>
+
+        <div id="historyList"></div>
+
+    </div>
+
+
+    <!-- CONTROLS -->
+
+    <button
+        class="reset-btn"
+        onclick="resetAttendance()">
+        🔄 Reset Today's Attendance
+    </button>
+
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+        🚪 Logout
+    </button>
+
+
+    <button
+        onclick="toggleDarkMode()">
+        🌙 Dark Mode
+    </button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+let workers = JSON.parse(
+    localStorage.getItem("workers")
+) || [
+
+    {
+        id:"W001",
+        name:"Ramesh",
+        attendance:"none"
+    },
+
+    {
+        id:"W002",
+        name:"Suresh",
+        attendance:"none"
+    },
+
+    {
+        id:"W003",
+        name:"Amit",
+        attendance:"none"
+    }
+
+];
+
+
+/*
+   History format:
+
+   {
+      "2026-09-09": {
+          "W001":"present",
+          "W002":"absent"
+      }
+   }
+*/
+
+let attendanceHistory = JSON.parse(
+    localStorage.getItem("attendanceHistory")
+) || {};
+
+
+/* =========================
+   DATE KEY
+========================= */
+
+function getDateKey(){
+
+    const date = new Date();
+
+    const year = date.getFullYear();
+
+    const month =
+        String(date.getMonth()+1).padStart(2,"0");
+
+    const day =
+        String(date.getDate()).padStart(2,"0");
+
+    return year + "-" + month + "-" + day;
+
+}
+
+
+/* =========================
+   DISPLAY DATE
+========================= */
+
+function updateDate(){
+
+    const date = new Date();
+
+    const options = {
+        day:"2-digit",
+        month:"long",
+        year:"numeric"
+    };
+
+    document.getElementById("currentDate")
+        .innerText =
+        date.toLocaleDateString("hi-IN",options);
+
+}
+
+
+/* =========================
+   LOAD TODAY ATTENDANCE
+========================= */
+
+function loadTodayAttendance(){
+
+    const today = getDateKey();
+
+    const todayData =
+        attendanceHistory[today] || {};
+
+
+    workers.forEach(worker => {
+
+        if(todayData[worker.id]){
+
+            worker.attendance =
+                todayData[worker.id];
+
+        }
+        else{
+
+            worker.attendance = "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================
+   SAVE WORKERS
+========================= */
+
+function saveWorkers(){
+
+    localStorage.setItem(
+        "workers",
+        JSON.stringify(workers)
+    );
+
+}
+
+
+/* =========================
+   SAVE HISTORY
+========================= */
+
+function saveHistory(){
+
+    localStorage.setItem(
+        "attendanceHistory",
+        JSON.stringify(attendanceHistory)
+    );
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+    const username =
+        document.getElementById("username")
+        .value.trim();
+
+    const password =
+        document.getElementById("password")
+        .value.trim();
+
+    const message =
+        document.getElementById("loginMessage");
+
+
+    if(
+        username === "admin" &&
+        password === "1234"
+    ){
+
+        document.getElementById("loginBox")
+            .classList.remove("active");
+
+        document.getElementById("dashboard")
+            .classList.add("active");
+
+        message.innerText = "";
+
+        loadTodayAttendance();
+        updateDate();
+        renderWorkers();
+
+    }
+    else{
+
+        message.style.color = "#d32f2f";
+
+        message.innerText =
+            "❌ गलत Username या Password";
+
+    }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    document.getElementById("dashboard")
+        .classList.remove("active");
+
+    document.getElementById("loginBox")
+        .classList.add("active");
+
+    document.getElementById("username")
+        .value = "";
+
+    document.getElementById("password")
+        .value = "";
+
+}
+
+
+/* =========================
+   ADD WORKER
+========================= */
+
+function addWorker(){
+
+    const name =
+        document.getElementById("workerName")
+        .value.trim();
+
+    const id =
+        document.getElementById("workerId")
+        .value.trim();
+
+
+    if(name === "" || id === ""){
+
+        alert(
+            "Worker Name और Worker ID डालें।"
+        );
+
+        return;
+
+    }
+
+
+    const alreadyExists =
+        workers.some(
+            worker => worker.id === id
+        );
+
+
+    if(alreadyExists){
+
+        alert(
+            "यह Worker ID पहले से मौजूद है।"
+        );
+
+        return;
+
+    }
+
+
+    workers.push({
+
+        id:id,
+        name:name,
+        attendance:"none"
+
+    });
+
+
+    saveWorkers();
+
+
+    document.getElementById("workerName")
+        .value = "";
+
+    document.getElementById("workerId")
+        .value = "";
+
+
+    renderWorkers();
+
+}
+
+
+/* =========================
+   MARK ATTENDANCE
+========================= */
+
+function markAttendance(index,status){
+
+    const worker = workers[index];
+
+    const today = getDateKey();
+
+
+    if(!attendanceHistory[today]){
+
+        attendanceHistory[today] = {};
+
+    }
+
+
+    attendanceHistory[today][worker.id] =
+        status;
+
+
+    worker.attendance = status;
+
+
+    saveHistory();
+    saveWorkers();
+
+    renderWorkers();
+
+}
+
+
+/* =========================
+   RENDER WORKERS
+========================= */
+
+function renderWorkers(){
+
+    const list =
+        document.getElementById("workerList");
+
+    list.innerHTML = "";
+
+
+    workers.forEach((worker,index)=>{
+
+        let statusHTML = "";
+
+
+        if(worker.attendance === "present"){
+
+            statusHTML = `
+                <div class="status status-present">
+                    ✅ Present
+                </div>
+            `;
+
+        }
+        else if(worker.attendance === "absent"){
+
+            statusHTML = `
+                <div class="status status-absent">
+                    ❌ Absent
+                </div>
+            `;
+
+        }
+        else{
+
+            statusHTML = `
+                <div class="status status-none">
+                    ⏳ Attendance Not Marked
+                </div>
+            `;
+
+        }
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "worker-card";
+
+
+        card.innerHTML = `
+
+            <div class="worker-name">
+                👷 ${worker.name}
+            </div>
+
+            <div class="worker-info">
+                Worker ID: ${worker.id}
+            </div>
+
+            ${statusHTML}
+
+            <button
+                class="present-btn"
+                onclick="markAttendance(${index},'present')">
+                ✅ Present
+            </button>
+
+            <button
+                class="absent-btn"
+                onclick="markAttendance(${index},'absent')">
+                ❌ Absent
+            </button>
+
+        `;
+
+
+        list.appendChild(card);
+
+    });
+
+
+    updateSummary();
+
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+function updateSummary(){
+
+    const total =
+        workers.length;
+
+
+    const present =
+        workers.filter(
+            worker =>
+            worker.attendance === "present"
+        ).length;
+
+
+    const absent =
+        workers.filter(
+            worker =>
+            worker.attendance === "absent"
+        ).length;
+
+
+    document.getElementById("totalWorkers")
+        .innerText = total;
+
+
+    document.getElementById("presentWorkers")
+        .innerText = present;
+
+
+    document.getElementById("absentWorkers")
+        .innerText = absent;
+
+}
+
+
+/* =========================
+   RESET TODAY
+========================= */
+
+function resetAttendance(){
+
+    const confirmReset =
+        confirm(
+            "क्या आप आज की पूरी attendance reset करना चाहते हैं?"
+        );
+
+
+    if(!confirmReset){
+
+        return;
+
+    }
+
+
+    const today = getDateKey();
+
+
+    delete attendanceHistory[today];
+
+
+    workers.forEach(worker => {
+
+        worker.attendance = "none";
+
+    });
+
+
+    saveHistory();
+    saveWorkers();
+
+    renderWorkers();
+
+
+    if(
+        document.getElementById("historySection")
+            .style.display !== "none"
+    ){
+
+        renderHistory();
+
+    }
+
+}
+
+
+/* =========================
+   HISTORY TOGGLE
+========================= */
+
+function toggleHistory(){
+
+    const section =
+        document.getElementById("historySection");
+
+
+    if(section.style.display === "none"){
+
+        section.style.display = "block";
+
+        renderHistory();
+
+    }
+    else{
+
+        section.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================
+   FORMAT HISTORY DATE
+========================= */
+
+function formatHistoryDate(dateKey){
+
+    const parts =
+        dateKey.split("-");
+
+
+    const date =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1])-1,
+            Number(parts[2])
+        );
+
+
+    return date.toLocaleDateString(
+        "hi-IN",
+        {
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+/* =========================
+   RENDER HISTORY
+========================= */
+
+function renderHistory(){
+
+    const list =
+        document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+
+    const dates =
+        Object.keys(attendanceHistory)
+            .sort()
+            .reverse();
+
+
+    if(dates.length === 0){
+
+        list.innerHTML = `
+            <div class="history-card no-history">
+                📭 अभी कोई Attendance History नहीं है।
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    dates.forEach(dateKey => {
+
+        const dayData =
+            attendanceHistory[dateKey];
+
+
+        let present = 0;
+        let absent = 0;
+
+
+        Object.values(dayData)
+            .forEach(status => {
+
+                if(status === "present"){
+                    present++;
+                }
+
+                if(status === "absent"){
+                    absent++;
+                }
+
+            });
+
+
+        const total =
+            workers.length;
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "history-card";
+
+
+        let workersHTML = "";
+
+
+        workers.forEach(worker => {
+
+            const status =
+                dayData[worker.id];
+
+
+            if(status === "present"){
+
+                workersHTML += `
+                    <div class="history-worker">
+                        👷 ${worker.name}
+                        — ✅ Present
+                    </div>
+                `;
+
+            }
+            else if(status === "absent"){
+
+                workersHTML += `
+                    <div class="history-worker">
+                        👷 ${worker.name}
+                        — ❌ Absent
+                    </div>
+                `;
+
+            }
+
+        });
+
+
+        if(workersHTML === ""){
+
+            workersHTML = `
+                <div class="no-history">
+                    कोई attendance marked नहीं है।
+                </div>
+            `;
+
+        }
+
+
+        card.innerHTML = `
+
+            <div class="history-date">
+                📅 ${formatHistoryDate(dateKey)}
+            </div>
+
+            <div class="history-summary">
+
+                <div class="history-number history-total">
+                    Total<br>${total}
+                </div>
+
+                <div class="history-number history-present">
+                    Present<br>${present}
+                </div>
+
+                <div class="history-number history-absent">
+                    Absent<br>${absent}
+                </div>
+
+            </div>
+
+            <div class="history-workers">
+                ${workersHTML}
+            </div>
+
+        `;
+
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+function toggleDarkMode(){
+
+    document.body.classList.toggle("dark");
+
+
+    const dark =
+        document.body.classList.contains("dark");
+
+
+    localStorage.setItem(
+        "darkMode",
+        dark
+    );
+
+}
+
+
+/* =========================
+   LOAD DARK MODE
+========================= */
+
+if(
+    localStorage.getItem("darkMode")
+    === "true"
+){
+
+    document.body.classList.add("dark");
+
+}
+
+
+/* =========================
+   INITIAL DATA MIGRATION
+========================= */
+
+/*
+   अगर पुराने version में आज की
+   attendance workers में मौजूद है,
+   तो उसे today's history में save करेंगे।
+*/
+
+(function migrateOldAttendance(){
+
+    const today = getDateKey();
+
+    let changed = false;
+
+
+    if(!attendanceHistory[today]){
+
+        attendanceHistory[today] = {};
+
+    }
+
+
+    workers.forEach(worker => {
+
+        if(
+            (
+                worker.attendance === "present" ||
+                worker.attendance === "absent"
+            )
+            &&
+            !attendanceHistory[today][worker.id]
+        ){
+
+            attendanceHistory[today][worker.id] =
+                worker.attendance;
+
+            changed = true;
+
+        }
+
+    });
+
+
+    if(changed){
+
+        saveHistory();
+
+    }
+
+})();
+
+</script>
+</body>
+</html>
