@@ -1,263 +1,834 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Worker Attendance & Payment</title>
+<meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Workers Attendance</title>
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    margin:0;
+    padding:15px;
+    color:#222;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 3px 12px #ccc;
+}
+
+h1,h2{
+    text-align:center;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+    width:100%;
+    padding:13px;
+    margin:6px 0;
+    border:0;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.login-btn{
+    background:#1976d2;
+    color:white;
+}
+
+.add-btn{
+    background:#1976d2;
+    color:white;
+}
+
+.present-btn{
+    background:#2e7d32;
+    color:white;
+}
+
+.absent-btn{
+    background:#d32f2f;
+    color:white;
+}
+
+.logout-btn{
+    background:#555;
+    color:white;
+}
+
+.reset-btn{
+    background:#ff9800;
+    color:white;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+input{
+    width:100%;
+    padding:12px;
+    margin:6px 0;
+    border:1px solid #bbb;
+    border-radius:7px;
+    font-size:16px;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.login-box,
+.dashboard{
+    display:none;
+}
+
+.login-box.active,
+.dashboard.active{
+    display:block;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+    text-align:center;
+    font-weight:bold;
+    margin:10px 0;
+    min-height:20px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    background:#f8f9fa;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
+
+.worker-card{
+    background:#f8f9fa;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
+
+.worker-name{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.worker-info{
+    color:#666;
+    font-size:14px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:15px 0;
+}
+
+.summary-box{
+    padding:15px 5px;
+    text-align:center;
+    border-radius:10px;
+    color:white;
+}
+
+.total{
+    background:#1976d2;
+}
+
+.present{
+    background:#2e7d32;
+}
+
+.absent{
+    background:#d32f2f;
+}
+
+.summary-number{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.summary-title{
+    font-size:13px;
+}
+
+/* =========================
+   ATTENDANCE STATUS
+========================= */
+
+.status{
+    padding:8px;
+    border-radius:7px;
+    text-align:center;
+    margin:8px 0;
+    font-weight:bold;
+}
+
+.status-present{
+    background:#c8e6c9;
+    color:#1b5e20;
+}
+
+.status-absent{
+    background:#ffcdd2;
+    color:#b71c1c;
+}
+
+.status-none{
+    background:#eeeeee;
+    color:#555;
+}
+
+/* =========================
+   DATE
+========================= */
+
+.date-box{
+    text-align:center;
+    font-weight:bold;
+    margin:10px 0;
+    color:#444;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+.dark{
+    background:#222;
+    color:white;
+}
+
+.dark .container{
+    background:#333;
+    color:white;
+}
+
+.dark .card,
+.dark .worker-card{
+    background:#444;
+    border-color:#555;
+}
+
+.dark input{
+    background:#444;
+    color:white;
+    border-color:#777;
+}
+
+.dark .subtitle,
+.dark .worker-info{
+    color:#ccc;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:500px){
+
+    body{
+        padding:8px;
     }
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
+    .container{
+        padding:15px;
     }
 
-    .container {
-      max-width: 600px;
-      margin: auto;
+    .summary{
+        grid-template-columns:1fr 1fr 1fr;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+    .summary-box{
+        padding:12px 3px;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    .summary-number{
+        font-size:21px;
     }
 
-    label {
-      display: block;
-      margin-top: 12px;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
+}
 
-    input,
-    select,
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    input,
-    select {
-      border: 1px solid #ccc;
-    }
-
-    button {
-      margin-top: 15px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .message {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 8px;
-      background: #e8f5e9;
-      color: #166534;
-      display: none;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-
-    th {
-      background: #f1f5f9;
-    }
-
-    .empty {
-      text-align: center;
-      color: #777;
-      padding: 15px;
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>Worker Attendance & Payment</h1>
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
 
-    <div class="card">
-      <h2>Worker Attendance</h2>
+<div id="loginBox" class="login-box active">
 
-      <label for="workerName">Worker Name</label>
-      <input
+    <h1>👷 Workers Attendance</h1>
+
+    <p class="subtitle">
+        Worker Attendance Management System
+    </p>
+
+    <input
         type="text"
-        id="workerName"
-        placeholder="Worker का नाम"
-      >
+        id="username"
+        placeholder="Username"
+    >
 
-      <label for="date">Date</label>
-      <input
-        type="date"
-        id="date"
-      >
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
 
-      <label for="status">Attendance</label>
-      <select id="status">
-        <option value="Present">Present</option>
-        <option value="Absent">Absent</option>
-        <option value="Half Day">Half Day</option>
-      </select>
+    <button
+        class="login-btn"
+        onclick="login()">
+        Login
+    </button>
 
-      <label for="payment">Payment</label>
-      <input
-        type="number"
-        id="payment"
-        placeholder="Payment amount"
-        min="0"
-      >
+    <div id="loginMessage" class="message"></div>
 
-      <button onclick="saveAttendance()">
-        Save Attendance
-      </button>
+    <p style="text-align:center;color:#777;font-size:13px;">
+        Demo Login: admin / 1234
+    </p>
 
-      <div id="message" class="message"></div>
+</div>
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div id="dashboard" class="dashboard">
+
+    <h1>👷 Workers Attendance</h1>
+
+    <div class="date-box">
+        📅 <span id="currentDate"></span>
     </div>
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-box total">
+            <div class="summary-number"
+                 id="totalWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Total
+            </div>
+        </div>
+
+        <div class="summary-box present">
+            <div class="summary-number"
+                 id="presentWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Present
+            </div>
+        </div>
+
+        <div class="summary-box absent">
+            <div class="summary-number"
+                 id="absentWorkers">
+                0
+            </div>
+
+            <div class="summary-title">
+                Absent
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ADD WORKER -->
 
     <div class="card">
-      <h2>Attendance Records</h2>
 
-      <div id="records">
-        <div class="empty">
-          अभी कोई record नहीं है।
-        </div>
-      </div>
+        <h2>➕ Add Worker</h2>
+
+        <input
+            type="text"
+            id="workerName"
+            placeholder="Worker Name"
+        >
+
+        <input
+            type="text"
+            id="workerId"
+            placeholder="Worker ID"
+        >
+
+        <button
+            class="add-btn"
+            onclick="addWorker()">
+            Add Worker
+        </button>
+
     </div>
 
-  </div>
 
-  <script>
-    const workerName = document.getElementById("workerName");
-    const date = document.getElementById("date");
-    const status = document.getElementById("status");
-    const payment = document.getElementById("payment");
-    const message = document.getElementById("message");
-    const records = document.getElementById("records");
+    <!-- WORKERS -->
 
-    date.value = new Date().toISOString().split("T")[0];
+    <h2>👷 Worker List</h2>
 
-    let attendanceRecords =
-      JSON.parse(localStorage.getItem("attendanceRecords")) || [];
+    <div id="workerList"></div>
 
-    function saveAttendance() {
 
-      const name = workerName.value.trim();
-      const selectedDate = date.value;
-      const selectedStatus = status.value;
-      const amount = payment.value || 0;
+    <!-- CONTROLS -->
 
-      if (name === "") {
-        showMessage("कृपया Worker का नाम डालें।");
-        return;
-      }
+    <button
+        class="reset-btn"
+        onclick="resetAttendance()">
+        🔄 Reset Today's Attendance
+    </button>
 
-      if (selectedDate === "") {
-        showMessage("कृपया Date चुनें।");
-        return;
-      }
+    <button
+        class="logout-btn"
+        onclick="logout()">
+        🚪 Logout
+    </button>
 
-      const record = {
-        name: name,
-        date: selectedDate,
-        status: selectedStatus,
-        payment: amount
-      };
+    <button
+        onclick="toggleDarkMode()">
+        🌙 Dark Mode
+    </button>
 
-      attendanceRecords.push(record);
+</div>
 
-      localStorage.setItem(
-        "attendanceRecords",
-        JSON.stringify(attendanceRecords)
-      );
+</div>
 
-      showMessage("Attendance successfully save हो गई।");
 
-      workerName.value = "";
-      payment.value = "";
+<script>
 
-      displayRecords();
+/* =========================
+   DATA
+========================= */
+
+let workers = JSON.parse(
+    localStorage.getItem("workers")
+) || [
+
+    {
+        id: "W001",
+        name: "Ramesh",
+        attendance: "none"
+    },
+
+    {
+        id: "W002",
+        name: "Suresh",
+        attendance: "none"
+    },
+
+    {
+        id: "W003",
+        name: "Amit",
+        attendance: "none"
     }
 
-    function showMessage(text) {
-      message.textContent = text;
-      message.style.display = "block";
+];
 
-      setTimeout(function() {
-        message.style.display = "none";
-      }, 3000);
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    const message =
+        document.getElementById("loginMessage");
+
+
+    if(username === "admin" && password === "1234"){
+
+        document.getElementById("loginBox")
+            .classList.remove("active");
+
+        document.getElementById("dashboard")
+            .classList.add("active");
+
+        message.innerText = "";
+
+        updateDate();
+        renderWorkers();
+
+    }
+    else{
+
+        message.style.color = "#d32f2f";
+
+        message.innerText =
+            "❌ गलत Username या Password";
+
     }
 
-    function displayRecords() {
+}
 
-      if (attendanceRecords.length === 0) {
-        records.innerHTML =
-          '<div class="empty">अभी कोई record नहीं है।</div>';
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    document.getElementById("dashboard")
+        .classList.remove("active");
+
+    document.getElementById("loginBox")
+        .classList.add("active");
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+function updateDate(){
+
+    const date = new Date();
+
+    const options = {
+        day:"2-digit",
+        month:"long",
+        year:"numeric"
+    };
+
+    document.getElementById("currentDate")
+        .innerText =
+        date.toLocaleDateString("hi-IN", options);
+
+}
+
+
+/* =========================
+   SAVE DATA
+========================= */
+
+function saveWorkers(){
+
+    localStorage.setItem(
+        "workers",
+        JSON.stringify(workers)
+    );
+
+}
+
+
+/* =========================
+   ADD WORKER
+========================= */
+
+function addWorker(){
+
+    const name =
+        document.getElementById("workerName")
+        .value.trim();
+
+    const id =
+        document.getElementById("workerId")
+        .value.trim();
+
+
+    if(name === "" || id === ""){
+
+        alert("Worker Name और Worker ID डालें।");
         return;
-      }
 
-      let html = `
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Payment</th>
-          </tr>
-      `;
+    }
 
-      attendanceRecords.forEach(function(record) {
 
-        html += `
-          <tr>
-            <td>${record.name}</td>
-            <td>${record.date}</td>
-            <td>${record.status}</td>
-            <td>₹${record.payment}</td>
-          </tr>
+    const alreadyExists =
+        workers.some(worker => worker.id === id);
+
+
+    if(alreadyExists){
+
+        alert("यह Worker ID पहले से मौजूद है।");
+        return;
+
+    }
+
+
+    workers.push({
+
+        id:id,
+        name:name,
+        attendance:"none"
+
+    });
+
+
+    saveWorkers();
+
+    document.getElementById("workerName").value = "";
+    document.getElementById("workerId").value = "";
+
+    renderWorkers();
+
+}
+
+
+/* =========================
+   ATTENDANCE
+========================= */
+
+function markAttendance(index,status){
+
+    workers[index].attendance = status;
+
+    saveWorkers();
+
+    renderWorkers();
+
+}
+
+
+/* =========================
+   RENDER WORKERS
+========================= */
+
+function renderWorkers(){
+
+    const list =
+        document.getElementById("workerList");
+
+    list.innerHTML = "";
+
+
+    workers.forEach((worker,index)=>{
+
+        let statusHTML = "";
+
+        if(worker.attendance === "present"){
+
+            statusHTML = `
+                <div class="status status-present">
+                    ✅ Present
+                </div>
+            `;
+
+        }
+        else if(worker.attendance === "absent"){
+
+            statusHTML = `
+                <div class="status status-absent">
+                    ❌ Absent
+                </div>
+            `;
+
+        }
+        else{
+
+            statusHTML = `
+                <div class="status status-none">
+                    ⏳ Attendance Not Marked
+                </div>
+            `;
+
+        }
+
+
+        const card = document.createElement("div");
+
+        card.className = "worker-card";
+
+
+        card.innerHTML = `
+
+            <div class="worker-name">
+                👷 ${worker.name}
+            </div>
+
+            <div class="worker-info">
+                Worker ID: ${worker.id}
+            </div>
+
+            ${statusHTML}
+
+            <button
+                class="present-btn"
+                onclick="markAttendance(${index},'present')">
+                ✅ Present
+            </button>
+
+            <button
+                class="absent-btn"
+                onclick="markAttendance(${index},'absent')">
+                ❌ Absent
+            </button>
+
         `;
-      });
 
-      html += "</table>";
 
-      records.innerHTML = html;
+        list.appendChild(card);
+
+    });
+
+
+    updateSummary();
+
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+function updateSummary(){
+
+    const total = workers.length;
+
+    const present =
+        workers.filter(
+            worker => worker.attendance === "present"
+        ).length;
+
+    const absent =
+        workers.filter(
+            worker => worker.attendance === "absent"
+        ).length;
+
+
+    document.getElementById("totalWorkers")
+        .innerText = total;
+
+    document.getElementById("presentWorkers")
+        .innerText = present;
+
+    document.getElementById("absentWorkers")
+        .innerText = absent;
+
+}
+
+
+/* =========================
+   RESET ATTENDANCE
+========================= */
+
+function resetAttendance(){
+
+    const confirmReset =
+        confirm(
+            "क्या आप आज की पूरी attendance reset करना चाहते हैं?"
+        );
+
+
+    if(!confirmReset){
+        return;
     }
 
-    displayRecords();
-  </script>
+
+    workers.forEach(worker => {
+
+        worker.attendance = "none";
+
+    });
+
+
+    saveWorkers();
+
+    renderWorkers();
+
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+function toggleDarkMode(){
+
+    document.body.classList.toggle("dark");
+
+    const dark =
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "darkMode",
+        dark
+    );
+
+}
+
+
+/* =========================
+   LOAD DARK MODE
+========================= */
+
+if(
+    localStorage.getItem("darkMode") === "true"
+){
+
+    document.body.classList.add("dark");
+
+}
+
+</script>
 
 </body>
 </html>
