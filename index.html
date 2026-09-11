@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1976d2">
 
 <title>Workers Attendance</title>
 
@@ -15,36 +15,95 @@
 }
 
 body{
-    font-family:Arial,sans-serif;
-    background:#f4f6f8;
     margin:0;
-    padding:15px;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#eef2f5;
     color:#222;
 }
 
-.container{
-    max-width:700px;
-    margin:auto;
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 3px 12px #ccc;
+body.dark{
+    background:#121212;
+    color:#eee;
 }
 
-h1,h2{
+.container{
+    width:100%;
+    max-width:700px;
+    margin:auto;
+    padding:15px;
+}
+
+/* LOGIN */
+
+.login-box,
+.dashboard{
+    display:none;
+}
+
+.login-box.active,
+.dashboard.active{
+    display:block;
+}
+
+.login-box{
+    max-width:430px;
+    margin:60px auto;
+    padding:25px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 4px 18px rgba(0,0,0,.15);
+}
+
+body.dark .login-box,
+body.dark .card,
+body.dark .worker-card,
+body.dark .history-card{
+    background:#1e1e1e;
+    border-color:#444;
+}
+
+h1{
     text-align:center;
+    margin:10px 0;
+}
+
+h2{
+    margin-top:5px;
 }
 
 .subtitle{
     text-align:center;
-    color:#666;
+    color:#777;
 }
 
-/* BUTTONS */
+body.dark .subtitle{
+    color:#bbb;
+}
+
+/* INPUT */
+
+input{
+    width:100%;
+    padding:12px;
+    margin:6px 0;
+    border:1px solid #bbb;
+    border-radius:8px;
+    font-size:16px;
+    background:white;
+    color:#222;
+}
+
+body.dark input{
+    background:#292929;
+    color:white;
+    border-color:#555;
+}
+
+/* BUTTON */
 
 button{
     width:100%;
-    padding:13px;
+    padding:12px;
     margin:6px 0;
     border:0;
     border-radius:8px;
@@ -87,27 +146,14 @@ button:active{
     color:white;
 }
 
-/* INPUT */
-
-input{
-    width:100%;
-    padding:12px;
-    margin:6px 0;
-    border:1px solid #bbb;
-    border-radius:7px;
-    font-size:16px;
+.delete-btn{
+    background:#b71c1c;
+    color:white;
 }
 
-/* SCREENS */
-
-.login-box,
-.dashboard{
-    display:none;
-}
-
-.login-box.active,
-.dashboard.active{
-    display:block;
+.backup-btn{
+    background:#455a64;
+    color:white;
 }
 
 /* MESSAGE */
@@ -115,31 +161,23 @@ input{
 .message{
     text-align:center;
     font-weight:bold;
+    min-height:22px;
     margin:10px 0;
-    min-height:20px;
 }
 
-/* CARDS */
+/* DATE */
 
-.card,
-.worker-card,
-.history-card{
-    background:#f8f9fa;
-    padding:15px;
+.date-box{
+    text-align:center;
+    background:#e3f2fd;
+    padding:10px;
+    border-radius:8px;
     margin:10px 0;
-    border-radius:10px;
-    border:1px solid #ddd;
-}
-
-.worker-name{
-    font-size:18px;
     font-weight:bold;
-    margin-bottom:8px;
 }
 
-.worker-info{
-    color:#666;
-    font-size:14px;
+body.dark .date-box{
+    background:#263238;
 }
 
 /* SUMMARY */
@@ -147,26 +185,26 @@ input{
 .summary{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin:15px 0;
+    gap:8px;
+    margin:12px 0;
 }
 
 .summary-box{
-    padding:15px 5px;
-    text-align:center;
+    padding:14px 5px;
     border-radius:10px;
+    text-align:center;
     color:white;
 }
 
-.total{
-    background:#1976d2;
+.summary-box.total{
+    background:#455a64;
 }
 
-.present{
+.summary-box.present{
     background:#2e7d32;
 }
 
-.absent{
+.summary-box.absent{
     background:#d32f2f;
 }
 
@@ -176,53 +214,97 @@ input{
 }
 
 .summary-title{
-    font-size:13px;
+    font-size:14px;
+    margin-top:4px;
 }
 
-/* STATUS */
+/* CARD */
 
-.status{
-    padding:8px;
-    border-radius:7px;
-    text-align:center;
-    margin:8px 0;
+.card,
+.worker-card,
+.history-card{
+    background:white;
+    padding:15px;
+    margin:12px 0;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
+
+/* WORKER */
+
+.worker-card{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.worker-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.worker-name{
+    font-size:18px;
     font-weight:bold;
 }
 
-.status-present{
+.worker-id{
+    font-size:13px;
+    color:#777;
+}
+
+.status{
+    padding:6px 9px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.status.present{
     background:#c8e6c9;
     color:#1b5e20;
 }
 
-.status-absent{
+.status.absent{
     background:#ffcdd2;
     color:#b71c1c;
 }
 
-.status-none{
-    background:#eeeeee;
-    color:#555;
+.status.none{
+    background:#eceff1;
+    color:#455a64;
 }
 
-/* DATE */
+.worker-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
 
-.date-box{
-    text-align:center;
-    font-weight:bold;
-    margin:10px 0;
-    color:#444;
+.worker-actions button{
+    margin:0;
+}
+
+.worker-actions .delete-btn{
+    grid-column:1 / -1;
 }
 
 /* HISTORY */
 
 .history-section{
-    margin-top:20px;
+    display:none;
+}
+
+.history-section.active{
+    display:block;
 }
 
 .history-date{
     font-size:18px;
     font-weight:bold;
-    margin-bottom:10px;
+    margin-bottom:8px;
 }
 
 .history-summary{
@@ -232,116 +314,80 @@ input{
 }
 
 .history-number{
-    padding:10px 5px;
+    padding:9px 4px;
     text-align:center;
     border-radius:7px;
     color:white;
     font-weight:bold;
+    font-size:14px;
 }
 
-.history-total{
-    background:#1976d2;
-}
-
-.history-present{
+.history-number.present{
     background:#2e7d32;
 }
 
-.history-absent{
+.history-number.absent{
     background:#d32f2f;
 }
 
-.history-workers{
-    margin-top:10px;
+.history-number.marked{
+    background:#607d8b;
 }
 
-.history-worker{
-    padding:8px;
-    margin:5px 0;
-    background:white;
-    border-radius:6px;
-    border:1px solid #ddd;
-}
-
-.no-history{
+.empty{
     text-align:center;
+    padding:18px;
     color:#777;
-    padding:15px;
 }
 
-/* DARK MODE */
+.small{
+    font-size:13px;
+    color:#777;
+    margin-top:4px;
+}
 
-.dark{
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
     background:#222;
     color:white;
+    padding:11px 16px;
+    border-radius:8px;
+    display:none;
+    z-index:9999;
+    max-width:90%;
+    text-align:center;
 }
 
-.dark .container{
-    background:#333;
-    color:white;
+.toast.show{
+    display:block;
 }
 
-.dark .card,
-.dark .worker-card,
-.dark .history-card{
-    background:#444;
-    border-color:#555;
-}
-
-.dark input{
-    background:#444;
-    color:white;
-    border-color:#777;
-}
-
-.dark .subtitle,
-.dark .worker-info{
-    color:#ccc;
-}
-
-.dark .history-worker{
-    background:#555;
-    border-color:#666;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:500px){
-
-    body{
-        padding:8px;
-    }
+@media(max-width:420px){
 
     .container{
-        padding:15px;
-    }
-
-    .summary{
-        grid-template-columns:1fr 1fr 1fr;
-    }
-
-    .summary-box{
-        padding:12px 3px;
+        padding:10px;
     }
 
     .summary-number{
-        font-size:21px;
-    }
-
-    .history-summary{
-        grid-template-columns:1fr 1fr 1fr;
+        font-size:22px;
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<!-- LOGIN -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <div id="loginBox" class="login-box active">
 
@@ -364,26 +410,38 @@ input{
     <button
         class="login-btn"
         onclick="login()">
+
         Login
+
     </button>
 
-    <div id="loginMessage" class="message"></div>
+    <div
+        id="loginMessage"
+        class="message">
+    </div>
 
-    <p style="text-align:center;color:#777;font-size:13px;">
+    <p
+        style="text-align:center;color:#777;font-size:13px;">
+
         Demo Login: admin / 1234
+
     </p>
 
 </div>
 
 
-<!-- DASHBOARD -->
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
 <div id="dashboard" class="dashboard">
 
     <h1>👷 Workers Attendance</h1>
 
     <div class="date-box">
+
         📅 <span id="currentDate"></span>
+
     </div>
 
 
@@ -393,9 +451,12 @@ input{
 
         <div class="summary-box total">
 
-            <div class="summary-number"
-                 id="totalWorkers">
+            <div
+                class="summary-number"
+                id="totalWorkers">
+
                 0
+
             </div>
 
             <div class="summary-title">
@@ -407,9 +468,12 @@ input{
 
         <div class="summary-box present">
 
-            <div class="summary-number"
-                 id="presentWorkers">
+            <div
+                class="summary-number"
+                id="presentWorkers">
+
                 0
+
             </div>
 
             <div class="summary-title">
@@ -421,9 +485,12 @@ input{
 
         <div class="summary-box absent">
 
-            <div class="summary-number"
-                 id="absentWorkers">
+            <div
+                class="summary-number"
+                id="absentWorkers">
+
                 0
+
             </div>
 
             <div class="summary-title">
@@ -454,17 +521,28 @@ input{
         <button
             class="add-btn"
             onclick="addWorker()">
+
             Add Worker
+
         </button>
+
+        <div
+            id="workerMessage"
+            class="message">
+        </div>
 
     </div>
 
 
     <!-- WORKER LIST -->
 
-    <h2>👷 Worker List</h2>
+    <div class="card">
 
-    <div id="workerList"></div>
+        <h2>👷 Worker List</h2>
+
+        <div id="workerList"></div>
+
+    </div>
 
 
     <!-- HISTORY BUTTON -->
@@ -472,17 +550,17 @@ input{
     <button
         class="history-btn"
         onclick="toggleHistory()">
+
         📋 Attendance History
+
     </button>
 
 
     <!-- HISTORY -->
 
-    <div id="historySection"
-         class="history-section"
-         style="display:none;">
-
-        <h2>📅 Attendance History</h2>
+    <div
+        id="historySection"
+        class="history-section">
 
         <div id="historyList"></div>
 
@@ -491,142 +569,423 @@ input{
 
     <!-- CONTROLS -->
 
-    <button
-        class="reset-btn"
-        onclick="resetAttendance()">
-        🔄 Reset Today's Attendance
-    </button>
+    <div class="card">
+
+        <h2>⚙️ Controls</h2>
+
+        <button
+            class="reset-btn"
+            onclick="resetTodayAttendance()">
+
+            🔄 Reset Today's Attendance
+
+        </button>
 
 
-    <button
-        class="logout-btn"
-        onclick="logout()">
-        🚪 Logout
-    </button>
+        <button
+            class="backup-btn"
+            onclick="backupData()">
+
+            💾 Backup Data
+
+        </button>
 
 
-    <button
-        onclick="toggleDarkMode()">
-        🌙 Dark Mode
-    </button>
+        <button
+            onclick="restoreData()">
+
+            📥 Restore Backup
+
+        </button>
+
+
+        <button
+            onclick="toggleDarkMode()">
+
+            🌙 Dark Mode
+
+        </button>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()">
+
+            🚪 Logout
+
+        </button>
+
+    </div>
 
 </div>
 
+</div>
+
+
+<!-- RESTORE FILE -->
+
+<input
+    type="file"
+    id="restoreFile"
+    accept=".json"
+    style="display:none">
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast">
 </div>
 
 
 <script>
 
-/* =========================
+/* =====================================================
+   STORAGE
+===================================================== */
+
+const WORKERS_KEY =
+    "workers_attendance_workers";
+
+const HISTORY_KEY =
+    "workers_attendance_history";
+
+const DIRECTORY_KEY =
+    "workers_attendance_directory";
+
+const DARK_KEY =
+    "workers_attendance_dark";
+
+
+/* =====================================================
    DATA
-========================= */
+===================================================== */
 
-let workers = JSON.parse(
-    localStorage.getItem("workers")
-) || [
+let workers = [];
 
-    {
-        id:"W001",
-        name:"Ramesh",
-        attendance:"none"
-    },
+let attendanceHistory = {};
 
-    {
-        id:"W002",
-        name:"Suresh",
-        attendance:"none"
-    },
+let directory = {};
 
-    {
-        id:"W003",
-        name:"Amit",
-        attendance:"none"
+let historyVisible = false;
+
+
+/* =====================================================
+   SAFE READ
+===================================================== */
+
+function readData(key, fallback){
+
+    try{
+
+        const data =
+            localStorage.getItem(key);
+
+        if(!data){
+            return fallback;
+        }
+
+        return JSON.parse(data);
+
+    }catch(error){
+
+        console.log(error);
+
+        return fallback;
+
     }
 
-];
+}
 
 
-/*
-   History format:
+/* =====================================================
+   SAFE SAVE
+===================================================== */
 
-   {
-      "2026-09-09": {
-          "W001":"present",
-          "W002":"absent"
-      }
-   }
-*/
+function saveData(key, value){
 
-let attendanceHistory = JSON.parse(
-    localStorage.getItem("attendanceHistory")
-) || {};
+    try{
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+
+    }catch(error){
+
+        console.log(error);
+
+        showToast(
+            "⚠️ Data save नहीं हो सका"
+        );
+
+    }
+
+}
 
 
-/* =========================
+/* =====================================================
    DATE KEY
-========================= */
+===================================================== */
 
 function getDateKey(){
 
-    const date = new Date();
+    const date =
+        new Date();
 
-    const year = date.getFullYear();
+    const year =
+        date.getFullYear();
 
     const month =
-        String(date.getMonth()+1).padStart(2,"0");
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0");
 
     const day =
-        String(date.getDate()).padStart(2,"0");
+        String(
+            date.getDate()
+        ).padStart(2,"0");
 
-    return year + "-" + month + "-" + day;
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    DISPLAY DATE
-========================= */
+===================================================== */
 
 function updateDate(){
 
-    const date = new Date();
+    const date =
+        new Date();
 
     const options = {
+
         day:"2-digit",
         month:"long",
         year:"numeric"
+
     };
 
-    document.getElementById("currentDate")
+    document
+        .getElementById("currentDate")
         .innerText =
-        date.toLocaleDateString("hi-IN",options);
+            date.toLocaleDateString(
+                "hi-IN",
+                options
+            );
 
 }
 
 
-/* =========================
-   LOAD TODAY ATTENDANCE
-========================= */
+/* =====================================================
+   LOAD DATA
+===================================================== */
+
+function loadData(){
+
+    workers =
+        readData(
+            WORKERS_KEY,
+            null
+        );
+
+
+    if(!Array.isArray(workers)){
+
+        workers = [
+
+            {
+                id:"W001",
+                name:"Ramesh",
+                attendance:"none"
+            },
+
+            {
+                id:"W002",
+                name:"Suresh",
+                attendance:"none"
+            },
+
+            {
+                id:"W003",
+                name:"Amit",
+                attendance:"none"
+            }
+
+        ];
+
+    }
+
+
+    attendanceHistory =
+        readData(
+            HISTORY_KEY,
+            {}
+        );
+
+
+    if(
+        !attendanceHistory ||
+        typeof attendanceHistory !== "object" ||
+        Array.isArray(attendanceHistory)
+    ){
+
+        attendanceHistory = {};
+
+    }
+
+
+    directory =
+        readData(
+            DIRECTORY_KEY,
+            {}
+        );
+
+
+    if(
+        !directory ||
+        typeof directory !== "object" ||
+        Array.isArray(directory)
+    ){
+
+        directory = {};
+
+    }
+
+
+    normalizeWorkers();
+
+    loadTodayAttendance();
+
+    saveAll();
+
+}
+
+
+/* =====================================================
+   NORMALIZE WORKERS
+===================================================== */
+
+function normalizeWorkers(){
+
+    const clean = [];
+
+    workers.forEach(function(worker){
+
+        if(!worker){
+            return;
+        }
+
+        const id =
+            String(
+                worker.id || ""
+            ).trim();
+
+        const name =
+            String(
+                worker.name || ""
+            ).trim();
+
+        if(!id || !name){
+            return;
+        }
+
+        let attendance =
+            "none";
+
+        if(
+            worker.attendance === "present" ||
+            worker.attendance === "absent"
+        ){
+
+            attendance =
+                worker.attendance;
+
+        }
+
+        clean.push({
+
+            id:id,
+
+            name:name,
+
+            attendance:attendance
+
+        });
+
+
+        directory[id] =
+            name;
+
+    });
+
+
+    workers =
+        clean;
+
+}
+
+
+/* =====================================================
+   SAVE ALL
+===================================================== */
+
+function saveAll(){
+
+    saveData(
+        WORKERS_KEY,
+        workers
+    );
+
+    saveData(
+        HISTORY_KEY,
+        attendanceHistory
+    );
+
+    saveData(
+        DIRECTORY_KEY,
+        directory
+    );
+
+}
+
+
+/* =====================================================
+   LOAD TODAY
+===================================================== */
 
 function loadTodayAttendance(){
 
-    const today = getDateKey();
+    const today =
+        getDateKey();
 
     const todayData =
         attendanceHistory[today] || {};
 
 
-    workers.forEach(worker => {
+    workers.forEach(function(worker){
 
-        if(todayData[worker.id]){
+        if(
+            todayData[worker.id] === "present" ||
+            todayData[worker.id] === "absent"
+        ){
 
             worker.attendance =
                 todayData[worker.id];
 
-        }
-        else{
+        }else{
 
-            worker.attendance = "none";
+            worker.attendance =
+                "none";
 
         }
 
@@ -635,50 +994,27 @@ function loadTodayAttendance(){
 }
 
 
-/* =========================
-   SAVE WORKERS
-========================= */
-
-function saveWorkers(){
-
-    localStorage.setItem(
-        "workers",
-        JSON.stringify(workers)
-    );
-
-}
-
-
-/* =========================
-   SAVE HISTORY
-========================= */
-
-function saveHistory(){
-
-    localStorage.setItem(
-        "attendanceHistory",
-        JSON.stringify(attendanceHistory)
-    );
-
-}
-
-
-/* =========================
+/* =====================================================
    LOGIN
-========================= */
+===================================================== */
 
 function login(){
 
     const username =
-        document.getElementById("username")
-        .value.trim();
+        document
+            .getElementById("username")
+            .value
+            .trim();
 
     const password =
-        document.getElementById("password")
-        .value.trim();
+        document
+            .getElementById("password")
+            .value
+            .trim();
 
     const message =
-        document.getElementById("loginMessage");
+        document
+            .getElementById("loginMessage");
 
 
     if(
@@ -686,22 +1022,37 @@ function login(){
         password === "1234"
     ){
 
-        document.getElementById("loginBox")
-            .classList.remove("active");
+        document
+            .getElementById("loginBox")
+            .classList
+            .remove("active");
 
-        document.getElementById("dashboard")
-            .classList.add("active");
+
+        document
+            .getElementById("dashboard")
+            .classList
+            .add("active");
+
 
         message.innerText = "";
 
         loadTodayAttendance();
+
         updateDate();
+
         renderWorkers();
 
-    }
-    else{
+        renderHistory();
 
-        message.style.color = "#d32f2f";
+        showToast(
+            "✅ Login सफल"
+        );
+
+
+    }else{
+
+        message.style.color =
+            "#d32f2f";
 
         message.innerText =
             "❌ गलत Username या Password";
@@ -711,64 +1062,101 @@ function login(){
 }
 
 
-/* =========================
+/* =====================================================
    LOGOUT
-========================= */
+===================================================== */
 
 function logout(){
 
-    document.getElementById("dashboard")
-        .classList.remove("active");
+    document
+        .getElementById("dashboard")
+        .classList
+        .remove("active");
 
-    document.getElementById("loginBox")
-        .classList.add("active");
 
-    document.getElementById("username")
+    document
+        .getElementById("loginBox")
+        .classList
+        .add("active");
+
+
+    document
+        .getElementById("username")
         .value = "";
 
-    document.getElementById("password")
+
+    document
+        .getElementById("password")
         .value = "";
+
+
+    document
+        .getElementById("loginMessage")
+        .innerText = "";
 
 }
 
 
-/* =========================
+/* =====================================================
    ADD WORKER
-========================= */
+===================================================== */
 
 function addWorker(){
 
+    const nameInput =
+        document.getElementById(
+            "workerName"
+        );
+
+    const idInput =
+        document.getElementById(
+            "workerId"
+        );
+
+    const message =
+        document.getElementById(
+            "workerMessage"
+        );
+
+
     const name =
-        document.getElementById("workerName")
-        .value.trim();
+        nameInput.value.trim();
 
     const id =
-        document.getElementById("workerId")
-        .value.trim();
+        idInput.value.trim();
 
 
-    if(name === "" || id === ""){
+    if(!name || !id){
 
-        alert(
-            "Worker Name और Worker ID डालें।"
-        );
+        message.style.color =
+            "#d32f2f";
+
+        message.innerText =
+            "❌ Worker Name और Worker ID दोनों भरें";
 
         return;
 
     }
 
 
-    const alreadyExists =
-        workers.some(
-            worker => worker.id === id
-        );
+    const exists =
+        workers.some(function(worker){
+
+            return (
+                worker.id.toLowerCase() ===
+                id.toLowerCase()
+            );
+
+        });
 
 
-    if(alreadyExists){
+    if(exists){
 
-        alert(
-            "यह Worker ID पहले से मौजूद है।"
-        );
+        message.style.color =
+            "#d32f2f";
+
+        message.innerText =
+            "❌ यह Worker ID पहले से मौजूद है";
 
         return;
 
@@ -778,36 +1166,66 @@ function addWorker(){
     workers.push({
 
         id:id,
+
         name:name,
+
         attendance:"none"
 
     });
 
 
-    saveWorkers();
+    directory[id] =
+        name;
 
 
-    document.getElementById("workerName")
-        .value = "";
+    saveAll();
 
-    document.getElementById("workerId")
-        .value = "";
+    nameInput.value = "";
+
+    idInput.value = "";
+
+
+    message.style.color =
+        "#2e7d32";
+
+    message.innerText =
+        "✅ Worker Add हो गया";
 
 
     renderWorkers();
 
+    showToast(
+        "✅ Worker Add हो गया"
+    );
+
 }
 
 
-/* =========================
-   MARK ATTENDANCE
-========================= */
+/* =====================================================
+   ATTENDANCE
+===================================================== */
 
-function markAttendance(index,status){
+function setAttendance(id,status){
 
-    const worker = workers[index];
+    const worker =
+        workers.find(function(item){
 
-    const today = getDateKey();
+            return item.id === id;
+
+        });
+
+
+    if(!worker){
+        return;
+    }
+
+
+    worker.attendance =
+        status;
+
+
+    const today =
+        getDateKey();
 
 
     if(!attendanceHistory[today]){
@@ -817,66 +1235,62 @@ function markAttendance(index,status){
     }
 
 
-    attendanceHistory[today][worker.id] =
+    attendanceHistory[today][id] =
         status;
 
 
-    worker.attendance = status;
-
-
-    saveHistory();
-    saveWorkers();
+    saveAll();
 
     renderWorkers();
+
+    renderHistory();
+
+
+    if(status === "present"){
+
+        showToast(
+            "✅ Present दर्ज हो गया"
+        );
+
+    }else{
+
+        showToast(
+            "❌ Absent दर्ज हो गया"
+        );
+
+    }
 
 }
 
 
-/* =========================
+/* =====================================================
    RENDER WORKERS
-========================= */
+===================================================== */
 
 function renderWorkers(){
 
     const list =
-        document.getElementById("workerList");
+        document.getElementById(
+            "workerList"
+        );
+
 
     list.innerHTML = "";
 
 
-    workers.forEach((worker,index)=>{
+    if(workers.length === 0){
 
-        let statusHTML = "";
+        list.innerHTML =
+            '<div class="empty">कोई active worker नहीं है</div>';
+
+        updateSummary();
+
+        return;
+
+    }
 
 
-        if(worker.attendance === "present"){
-
-            statusHTML = `
-                <div class="status status-present">
-                    ✅ Present
-                </div>
-            `;
-
-        }
-        else if(worker.attendance === "absent"){
-
-            statusHTML = `
-                <div class="status status-absent">
-                    ❌ Absent
-                </div>
-            `;
-
-        }
-        else{
-
-            statusHTML = `
-                <div class="status status-none">
-                    ⏳ Attendance Not Marked
-                </div>
-            `;
-
-        }
-
+    workers.forEach(function(worker){
 
         const card =
             document.createElement("div");
@@ -885,31 +1299,151 @@ function renderWorkers(){
             "worker-card";
 
 
-        card.innerHTML = `
+        const top =
+            document.createElement("div");
 
-            <div class="worker-name">
-                👷 ${worker.name}
-            </div>
+        top.className =
+            "worker-top";
 
-            <div class="worker-info">
-                Worker ID: ${worker.id}
-            </div>
 
-            ${statusHTML}
+        const info =
+            document.createElement("div");
 
-            <button
-                class="present-btn"
-                onclick="markAttendance(${index},'present')">
-                ✅ Present
-            </button>
 
-            <button
-                class="absent-btn"
-                onclick="markAttendance(${index},'absent')">
-                ❌ Absent
-            </button>
+        const name =
+            document.createElement("div");
 
-        `;
+        name.className =
+            "worker-name";
+
+        name.textContent =
+            worker.name;
+
+
+        const id =
+            document.createElement("div");
+
+        id.className =
+            "worker-id";
+
+        id.textContent =
+            "ID: " + worker.id;
+
+
+        info.appendChild(name);
+
+        info.appendChild(id);
+
+
+        const status =
+            document.createElement("span");
+
+        status.className =
+            "status " +
+            worker.attendance;
+
+
+        if(worker.attendance === "present"){
+
+            status.textContent =
+                "Present";
+
+        }else if(
+            worker.attendance === "absent"
+        ){
+
+            status.textContent =
+                "Absent";
+
+        }else{
+
+            status.textContent =
+                "Not Marked";
+
+        }
+
+
+        top.appendChild(info);
+
+        top.appendChild(status);
+
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "worker-actions";
+
+
+        const present =
+            document.createElement("button");
+
+        present.className =
+            "present-btn";
+
+        present.textContent =
+            "✅ Present";
+
+        present.onclick =
+            function(){
+
+                setAttendance(
+                    worker.id,
+                    "present"
+                );
+
+            };
+
+
+        const absent =
+            document.createElement("button");
+
+        absent.className =
+            "absent-btn";
+
+        absent.textContent =
+            "❌ Absent";
+
+        absent.onclick =
+            function(){
+
+                setAttendance(
+                    worker.id,
+                    "absent"
+                );
+
+            };
+
+
+        const deleteBtn =
+            document.createElement("button");
+
+        deleteBtn.className =
+            "delete-btn";
+
+        deleteBtn.textContent =
+            "🗑️ Worker ने काम छोड़ दिया — Delete";
+
+        deleteBtn.onclick =
+            function(){
+
+                deleteWorker(
+                    worker.id
+                );
+
+            };
+
+
+        actions.appendChild(present);
+
+        actions.appendChild(absent);
+
+        actions.appendChild(deleteBtn);
+
+
+        card.appendChild(top);
+
+        card.appendChild(actions);
 
 
         list.appendChild(card);
@@ -922,9 +1456,9 @@ function renderWorkers(){
 }
 
 
-/* =========================
+/* =====================================================
    SUMMARY
-========================= */
+===================================================== */
 
 function updateSummary(){
 
@@ -933,117 +1467,191 @@ function updateSummary(){
 
 
     const present =
-        workers.filter(
-            worker =>
-            worker.attendance === "present"
-        ).length;
+        workers.filter(function(worker){
+
+            return worker.attendance === "present";
+
+        }).length;
 
 
     const absent =
-        workers.filter(
-            worker =>
-            worker.attendance === "absent"
-        ).length;
+        workers.filter(function(worker){
+
+            return worker.attendance === "absent";
+
+        }).length;
 
 
-    document.getElementById("totalWorkers")
+    document
+        .getElementById("totalWorkers")
         .innerText = total;
 
 
-    document.getElementById("presentWorkers")
+    document
+        .getElementById("presentWorkers")
         .innerText = present;
 
 
-    document.getElementById("absentWorkers")
+    document
+        .getElementById("absentWorkers")
         .innerText = absent;
 
 }
 
 
-/* =========================
-   RESET TODAY
-========================= */
+/* =====================================================
+   DELETE WORKER
+===================================================== */
 
-function resetAttendance(){
+function deleteWorker(id){
 
-    const confirmReset =
-        confirm(
-            "क्या आप आज की पूरी attendance reset करना चाहते हैं?"
-        );
+    const worker =
+        workers.find(function(item){
+
+            return item.id === id;
+
+        });
 
 
-    if(!confirmReset){
-
+    if(!worker){
         return;
-
     }
 
 
-    const today = getDateKey();
+    const confirmDelete =
+        confirm(
+            worker.name +
+            " (" +
+            worker.id +
+            ") को active list से हटाना है?\n\nपुरानी attendance history सुरक्षित रहेगी।"
+        );
 
 
-    delete attendanceHistory[today];
+    if(!confirmDelete){
+        return;
+    }
 
 
-    workers.forEach(worker => {
+    /*
+       Worker active list से हटेगा।
+       Directory और History से नहीं हटेगा।
+    */
 
-        worker.attendance = "none";
+
+    workers =
+        workers.filter(function(item){
+
+            return item.id !== id;
+
+        });
+
+
+    directory[id] =
+        worker.name;
+
+
+    saveAll();
+
+    renderWorkers();
+
+    renderHistory();
+
+
+    showToast(
+        "🗑️ Worker हट गया, पुरानी history सुरक्षित है"
+    );
+
+}
+
+
+/* =====================================================
+   RESET TODAY
+===================================================== */
+
+function resetTodayAttendance(){
+
+    const ok =
+        confirm(
+            "क्या आज की पूरी attendance reset करनी है?"
+        );
+
+
+    if(!ok){
+        return;
+    }
+
+
+    const today =
+        getDateKey();
+
+
+    attendanceHistory[today] =
+        {};
+
+
+    workers.forEach(function(worker){
+
+        worker.attendance =
+            "none";
 
     });
 
 
-    saveHistory();
-    saveWorkers();
+    saveAll();
 
     renderWorkers();
 
+    renderHistory();
 
-    if(
-        document.getElementById("historySection")
-            .style.display !== "none"
-    ){
 
-        renderHistory();
-
-    }
+    showToast(
+        "🔄 आज की attendance reset हो गई"
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    HISTORY TOGGLE
-========================= */
+===================================================== */
 
 function toggleHistory(){
 
-    const section =
-        document.getElementById("historySection");
+    historyVisible =
+        !historyVisible;
 
 
-    if(section.style.display === "none"){
+    document
+        .getElementById("historySection")
+        .classList
+        .toggle(
+            "active",
+            historyVisible
+        );
 
-        section.style.display = "block";
+
+    if(historyVisible){
 
         renderHistory();
-
-    }
-    else{
-
-        section.style.display = "none";
 
     }
 
 }
 
 
-/* =========================
-   FORMAT HISTORY DATE
-========================= */
+/* =====================================================
+   HISTORY DATE
+===================================================== */
 
-function formatHistoryDate(dateKey){
+function formatHistoryDate(key){
 
     const parts =
-        dateKey.split("-");
+        key.split("-");
+
+
+    if(parts.length !== 3){
+        return key;
+    }
 
 
     const date =
@@ -1066,63 +1674,88 @@ function formatHistoryDate(dateKey){
 }
 
 
-/* =========================
+/* =====================================================
    RENDER HISTORY
-========================= */
+===================================================== */
 
 function renderHistory(){
 
     const list =
-        document.getElementById("historyList");
+        document.getElementById(
+            "historyList"
+        );
+
 
     list.innerHTML = "";
 
 
     const dates =
-        Object.keys(attendanceHistory)
-            .sort()
-            .reverse();
+        Object.keys(
+            attendanceHistory
+        ).sort().reverse();
 
 
     if(dates.length === 0){
 
-        list.innerHTML = `
-            <div class="history-card no-history">
-                📭 अभी कोई Attendance History नहीं है।
-            </div>
-        `;
+        list.innerHTML =
+            '<div class="empty">अभी कोई attendance history नहीं है</div>';
 
         return;
 
     }
 
 
-    dates.forEach(dateKey => {
+    dates.forEach(function(dateKey){
 
-        const dayData =
+        const data =
             attendanceHistory[dateKey];
 
 
+        if(
+            !data ||
+            typeof data !== "object"
+        ){
+
+            return;
+
+        }
+
+
+        const ids =
+            Object.keys(data);
+
+
         let present = 0;
+
         let absent = 0;
 
 
-        Object.values(dayData)
-            .forEach(status => {
+        ids.forEach(function(id){
 
-                if(status === "present"){
-                    present++;
-                }
+            if(data[id] === "present"){
 
-                if(status === "absent"){
-                    absent++;
-                }
+                present++;
 
-            });
+            }
+
+            if(data[id] === "absent"){
+
+                absent++;
+
+            }
+
+        });
 
 
-        const total =
-            workers.length;
+        const marked =
+            present + absent;
+
+
+        if(marked === 0){
+
+            return;
+
+        }
 
 
         const card =
@@ -1132,173 +1765,454 @@ function renderHistory(){
             "history-card";
 
 
-        let workersHTML = "";
+        const title =
+            document.createElement("div");
+
+        title.className =
+            "history-date";
+
+        title.textContent =
+            "📅 " +
+            formatHistoryDate(
+                dateKey
+            );
 
 
-        workers.forEach(worker => {
+        const summary =
+            document.createElement("div");
+
+        summary.className =
+            "history-summary";
+
+
+        const p =
+            document.createElement("div");
+
+        p.className =
+            "history-number present";
+
+        p.textContent =
+            "Present: " + present;
+
+
+        const a =
+            document.createElement("div");
+
+        a.className =
+            "history-number absent";
+
+        a.textContent =
+            "Absent: " + absent;
+
+
+        const m =
+            document.createElement("div");
+
+        m.className =
+            "history-number marked";
+
+        m.textContent =
+            "Marked: " + marked;
+
+
+        summary.appendChild(p);
+
+        summary.appendChild(a);
+
+        summary.appendChild(m);
+
+
+        card.appendChild(title);
+
+        card.appendChild(summary);
+
+
+        ids.forEach(function(id){
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "small";
+
+
+            const name =
+                directory[id] || id;
+
 
             const status =
-                dayData[worker.id];
+                data[id] === "present"
+                    ? "Present"
+                    : "Absent";
 
 
-            if(status === "present"){
+            row.textContent =
+                name +
+                " (" +
+                id +
+                "): " +
+                status;
 
-                workersHTML += `
-                    <div class="history-worker">
-                        👷 ${worker.name}
-                        — ✅ Present
-                    </div>
-                `;
 
-            }
-            else if(status === "absent"){
-
-                workersHTML += `
-                    <div class="history-worker">
-                        👷 ${worker.name}
-                        — ❌ Absent
-                    </div>
-                `;
-
-            }
+            card.appendChild(row);
 
         });
-
-
-        if(workersHTML === ""){
-
-            workersHTML = `
-                <div class="no-history">
-                    कोई attendance marked नहीं है।
-                </div>
-            `;
-
-        }
-
-
-        card.innerHTML = `
-
-            <div class="history-date">
-                📅 ${formatHistoryDate(dateKey)}
-            </div>
-
-            <div class="history-summary">
-
-                <div class="history-number history-total">
-                    Total<br>${total}
-                </div>
-
-                <div class="history-number history-present">
-                    Present<br>${present}
-                </div>
-
-                <div class="history-number history-absent">
-                    Absent<br>${absent}
-                </div>
-
-            </div>
-
-            <div class="history-workers">
-                ${workersHTML}
-            </div>
-
-        `;
 
 
         list.appendChild(card);
 
     });
 
+
+    if(
+        list.innerHTML.trim() === ""
+    ){
+
+        list.innerHTML =
+            '<div class="empty">अभी कोई marked attendance history नहीं है</div>';
+
+    }
+
 }
 
 
-/* =========================
+/* =====================================================
    DARK MODE
-========================= */
+===================================================== */
 
-function toggleDarkMode(){
-
-    document.body.classList.toggle("dark");
-
+function applyDarkMode(){
 
     const dark =
-        document.body.classList.contains("dark");
+        localStorage.getItem(
+            DARK_KEY
+        ) === "true";
 
 
-    localStorage.setItem(
-        "darkMode",
+    document.body.classList.toggle(
+        "dark",
         dark
     );
 
 }
 
 
-/* =========================
-   LOAD DARK MODE
-========================= */
+function toggleDarkMode(){
 
-if(
-    localStorage.getItem("darkMode")
-    === "true"
-){
+    const dark =
+        document.body.classList.toggle(
+            "dark"
+        );
 
-    document.body.classList.add("dark");
+
+    localStorage.setItem(
+        DARK_KEY,
+        String(dark)
+    );
+
+
+    showToast(
+        dark
+            ? "🌙 Dark Mode ON"
+            : "☀️ Dark Mode OFF"
+    );
 
 }
 
 
-/* =========================
-   INITIAL DATA MIGRATION
-========================= */
+/* =====================================================
+   BACKUP
+===================================================== */
 
-/*
-   अगर पुराने version में आज की
-   attendance workers में मौजूद है,
-   तो उसे today's history में save करेंगे।
-*/
+function backupData(){
 
-(function migrateOldAttendance(){
+    const backup = {
 
-    const today = getDateKey();
+        app:"Workers Attendance",
 
-    let changed = false;
+        version:1,
+
+        createdAt:
+            new Date().toISOString(),
+
+        workers:
+            workers,
+
+        attendanceHistory:
+            attendanceHistory,
+
+        directory:
+            directory
+
+    };
 
 
-    if(!attendanceHistory[today]){
+    const blob =
+        new Blob(
+            [
+                JSON.stringify(
+                    backup,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:"application/json"
+            }
+        );
 
-        attendanceHistory[today] = {};
 
-    }
+    const url =
+        URL.createObjectURL(blob);
 
 
-    workers.forEach(worker => {
+    const link =
+        document.createElement("a");
 
-        if(
-            (
-                worker.attendance === "present" ||
-                worker.attendance === "absent"
-            )
-            &&
-            !attendanceHistory[today][worker.id]
-        ){
 
-            attendanceHistory[today][worker.id] =
-                worker.attendance;
+    link.href =
+        url;
 
-            changed = true;
+
+    link.download =
+        "workers-attendance-backup-" +
+        getDateKey() +
+        ".json";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+
+    URL.revokeObjectURL(url);
+
+
+    showToast(
+        "💾 Backup तैयार हो गया"
+    );
+
+}
+
+
+/* =====================================================
+   RESTORE
+===================================================== */
+
+function restoreData(){
+
+    document
+        .getElementById("restoreFile")
+        .click();
+
+}
+
+
+document
+    .getElementById("restoreFile")
+    .addEventListener(
+        "change",
+        function(event){
+
+            const file =
+                event.target.files[0];
+
+
+            if(!file){
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(){
+
+                    try{
+
+                        const backup =
+                            JSON.parse(
+                                reader.result
+                            );
+
+
+                        if(
+                            !backup ||
+                            !Array.isArray(
+                                backup.workers
+                            ) ||
+                            !backup.attendanceHistory
+                        ){
+
+                            throw new Error(
+                                "Invalid backup"
+                            );
+
+                        }
+
+
+                        workers =
+                            backup.workers;
+
+
+                        attendanceHistory =
+                            backup.attendanceHistory;
+
+
+                        directory =
+                            backup.directory || {};
+
+
+                        normalizeWorkers();
+
+                        loadTodayAttendance();
+
+                        saveAll();
+
+                        renderWorkers();
+
+                        renderHistory();
+
+
+                        showToast(
+                            "✅ Backup Restore हो गया"
+                        );
+
+
+                    }catch(error){
+
+                        console.log(error);
+
+                        alert(
+                            "❌ Backup file सही नहीं है"
+                        );
+
+                    }
+
+
+                    event.target.value = "";
+
+                };
+
+
+            reader.readAsText(file);
 
         }
+    );
 
-    });
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
 
 
-    if(changed){
+function showToast(text){
 
-        saveHistory();
+    const toast =
+        document.getElementById(
+            "toast"
+        );
 
-    }
 
-})();
+    toast.innerText =
+        text;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                login();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("workerName")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                document
+                    .getElementById(
+                        "workerId"
+                    )
+                    .focus();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("workerId")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                addWorker();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   START APP
+===================================================== */
+
+applyDarkMode();
+
+loadData();
+
+updateDate();
 
 </script>
 
